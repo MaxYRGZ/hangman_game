@@ -1,0 +1,23 @@
+
+div.wrapper{
+width:100vw;
+height: 70vh;
+background-color: #3ac865;
+text-align: center;
+
+}
+h1{
+color: rgb(255, 255, 255);
+
+}
+h2{
+color: black;
+size: 100px;
+}
+div.marc{
+    width:auto;
+    height: auto;
+    background-color: #3ac865;
+    text-align: center;
+    color: black;
+    }
