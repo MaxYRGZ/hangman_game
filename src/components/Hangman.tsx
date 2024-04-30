@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getRandomWord } from "./utilidades"; // Asegúrate de importar la función getRandomWord desde el archivo correcto
-import '../App'; // ¿Quizás falta el nombre del archivo CSS?
+import { getRandomWord } from "./utilidades"; 
+import '../App'; 
 
 // Definición de la interfaz para las props del componente Hangman
 interface HangmanProps {
