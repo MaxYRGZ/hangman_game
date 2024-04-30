@@ -1,11 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { getRandomWord } from "./utilidades"; // Asegúrate de importar la función getRandomWord desde el archivo correcto
+import '../App'; // ¿Quizás falta el nombre del archivo CSS?
 
+// Definición de la interfaz para las props del componente Hangman
 interface HangmanProps {
     category: string; // Propiedad que representa la categoría de la palabra
     word: string; // Propiedad que representa la palabra a adivinar
 }
 
+// Componente para mostrar el tiempo jugado
+const Clock = () => {
+    const [count, setCount] = useState(0);
+  
+    // Efecto para actualizar el contador cada segundo
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCount(count => count + 1);
+      }, 1000);
+  
+      // Limpiar el intervalo cuando el componente se desmonta
+      return () => clearInterval(interval);
+    }, []);
+  
+    return (
+      <div>
+        <p>Tiempo jugado: {count}</p>
+      </div>
+    );
+};
+
+// Componente Hangman
 const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
     // Estado para la palabra seleccionada
     const [selectedWord, setSelectedWord] = useState<string>(word);
@@ -48,7 +72,7 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
     const restartGame = () => {
         const newWord = getRandomWord(category); // Obtener una nueva palabra aleatoria
         setSelectedWord(newWord); // Establecer la nueva palabra seleccionada
-        setGuessedLetters([]); //Reinicia las letras
+        setGuessedLetters([]); // Reinicia las letras
         setErrorCount(0); // Reiniciar el contador de errores
     };
 
@@ -60,18 +84,15 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
     // Renderización del componente
     return (
         <div className="marc">
-            {/* Renderizar el botón "Play" si el juego no ha comenzado */}
             {!gameStarted && (
                 <button onClick={handleStartGame}>Play</button>
             )}
-            {/* Renderizar el contenido del juego si el juego ha comenzado */}
             {gameStarted && (
                 <>
-                    <h3>Categoría: {category}</h3> {/* Mostrar la categoría */}
-                    <p>{displayWord.join(' ')}</p> {/* Mostrar la palabra a adivinar */}
-                    <input maxLength={1} onChange={handleGuess} /> {/* Campo de entrada para adivinar letras */}
-
-                    {/* Renderizar mensajes de error y botón para seleccionar una nueva palabra cuando se cumplan ciertas condiciones */}
+                    <h3>Categoría: {category}</h3>
+                    <Clock />
+                    <p>{displayWord.join(' ')}</p>
+                    <input maxLength={1} onChange={handleGuess} />
                     {(displayWord.join('') === selectedWord || errorCount > 5) && (
                         <>
                             <button onClick={restartGame}>Select New Word</button>
