@@ -1,87 +1,98 @@
 import React, { useState, useEffect } from "react";
-import { getRandomWord } from "./utilidades"; 
-import '../App'; 
+import { getRandomWord } from "./utilidades";
+import Puntaje from "./Puntaje"; // Importa el componente Puntaje
+import '../App';
 
-// Definición de la interfaz para las props del componente Hangman
+// Definition of the interface for the Hangman component props
 interface HangmanProps {
-    category: string; // Propiedad que representa la categoría de la palabra
-    word: string; // Propiedad que representa la palabra a adivinar
+    category: string; // Property representing the word category
+    word: string; // Property representing the word to guess
 }
 
-// Componente para mostrar el tiempo jugado
+// Component to display the elapsed time
 const Clock = () => {
     const [count, setCount] = useState(0);
-  
-    // Efecto para actualizar el contador cada segundo
+
+    // Effect to update the counter every second
     useEffect(() => {
-      const interval = setInterval(() => {
-        setCount(count => count + 1);
-      }, 1000);
-  
-      // Limpiar el intervalo cuando el componente se desmonta
-      return () => clearInterval(interval);
+        const interval = setInterval(() => {
+            setCount(count => count + 1);
+        }, 1000);
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(interval);
     }, []);
-  
+
     return (
-      <div>
-        <p>Tiempo jugado: {count}</p>
-      </div>
+        <div>
+            <p>Time played: {count}</p>
+        </div>
     );
 };
 
-// Componente Hangman
+// Hangman Component
 const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
-    // Estado para la palabra seleccionada
+    // State for the selected word
     const [selectedWord, setSelectedWord] = useState<string>(word);
 
-    // Estado para las letras adivinadas, inicializado con la primera letra de la palabra
-    const [guessedLetters, setGuessedLetters] = useState<string[]>([word]); 
+    // State for guessed letters, initialized with the first letter of the word
+    const [guessedLetters, setGuessedLetters] = useState<string[]>([word]);
 
-    // Estado para contar los errores
+    // State to count errors
     const [errorCount, setErrorCount] = useState<number>(0);
 
-    // Estado para controlar si el juego ha comenzado
+    // State to control if the game has started
     const [gameStarted, setGameStarted] = useState<boolean>(false);
 
-    // Efecto para imprimir en consola la palabra seleccionada cuando cambie
+    // State for the rounds won counter
+    const [roundsWon, setRoundsWon] = useState<number>(0);
+
+    // Effect to log the selected word to the console when it changes
     useEffect(() => {
-        console.log("Palabra seleccionada:", selectedWord);
+        console.log("Selected word:", selectedWord);
     }, [selectedWord]);
 
-    // Función para renderizar la palabra a adivinar con las letras adivinadas mostradas y las no adivinadas ocultas
+    // Function to render the word to guess with guessed letters shown and unguessed ones hidden
     const displayWord = selectedWord.split('').map((letter, index) => {
         if (guessedLetters.includes(letter)) {
-            return letter; // Si la letra está en las letras adivinadas, se muestra
+            return letter; // If the letter is in the guessed letters, show it
         } else {
-            return '_'; // Si la letra no está en las letras adivinadas, se muestra como '_'
+            return '_'; // If the letter is not in the guessed letters, show it as '_'
         }
     });
 
-    // Función para manejar el intento de adivinar una letra
+    // Function to handle guessing a letter
     const handleGuess = (e: React.ChangeEvent<HTMLInputElement>) => {
         const letter = e.target.value;
         if (!guessedLetters.includes(letter)) {
             setGuessedLetters([...guessedLetters, letter]);
             if (!selectedWord.includes(letter)) {
-                setErrorCount(prev => prev + 1); // Si la letra no está en la palabra, aumenta el contador de errores
+                setErrorCount(prev => prev + 1); // If the letter is not in the word, increase the error count
             }
         }
     };
 
-    // Función para reiniciar el juego
+    // Function to restart the game
     const restartGame = () => {
-        const newWord = getRandomWord(category); // Obtener una nueva palabra aleatoria
-        setSelectedWord(newWord); // Establecer la nueva palabra seleccionada
-        setGuessedLetters([]); // Reinicia las letras
-        setErrorCount(0); // Reiniciar el contador de errores
+        const newWord = getRandomWord(category); // Get a new random word
+        setSelectedWord(newWord); // Set the new selected word
+        setGuessedLetters([]); // Reset guessed letters
+        setErrorCount(0); // Reset error count
     };
 
-    // Función para comenzar el juego
+    // Function to start the game
     const handleStartGame = () => {
-        setGameStarted(true); // Establecer que el juego ha comenzado
+        setGameStarted(true); // Set that the game has started
     };
 
-    // Renderización del componente
+  
+
+    // Function to increment rounds won
+    const incrementRoundsWon = () => {
+        setRoundsWon(prev => prev + 1);
+    };
+
+    // Component rendering
     return (
         <div className="marc">
             {!gameStarted && (
@@ -89,16 +100,17 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
             )}
             {gameStarted && (
                 <>
-                    <h3>Categoría: {category}</h3>
+                    <h3>Category: {category}</h3>
                     <Clock />
                     <p>{displayWord.join(' ')}</p>
                     <input maxLength={1} onChange={handleGuess} />
                     {(displayWord.join('') === selectedWord || errorCount > 5) && (
                         <>
-                            <button onClick={restartGame}>Select New Word</button>
-                            <p>Cantidad de errores: {errorCount}</p>
+                            <p>Error count: {errorCount}</p>
                             {displayWord.join('') === selectedWord && (
-                                <p>You won in this round</p>
+                                <>
+                                    <Puntaje roundsWon={roundsWon} restartGame={restartGame} incrementRoundsWon={incrementRoundsWon} />
+                                </>
                             )}
                         </>
                     )}

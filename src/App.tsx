@@ -1,4 +1,3 @@
-// En tu componente App.tsx
 import React from 'react';
 import Hangman from './components/Hangman';
 import Welcome from './components/Welcome';
