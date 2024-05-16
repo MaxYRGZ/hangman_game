@@ -15,8 +15,8 @@ color: black;
 size: 100px;
 }
 div.marc{
-    width:auto;
-    height: auto;
+    width:100vw;
+    height:25vh;
     background-color: #3ac865;
     text-align: center;
     color: black;
