@@ -49,7 +49,7 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
     };
 
     const incrementRoundsWon = () => {
-        setRoundsWon(prevCount => prevCount + 1); // Incrementa roundsWon en 1
+        setRoundsWon(prevCount => prevCount + 1); 
     };
 
     return (
@@ -75,7 +75,7 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
                     )}
                 </>
             )}
-            <Puntaje roundsWon={roundsWon} /> {/* Renderiza el componente Puntaje y pasa roundsWon */}
+            <Puntaje roundsWon={roundsWon} /> 
         </div>
     );
 };

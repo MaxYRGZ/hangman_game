@@ -7,7 +7,7 @@ interface PuntajeProps {
 const Puntaje: React.FC<PuntajeProps> = ({ roundsWon }: PuntajeProps) => {
     return (
         <div>
-            <p>You won in this round. Rounds won: {roundsWon}</p> {/* Muestra roundsWon */}
+            <p>You won in this round. Rounds won: {roundsWon}</p> 
         </div>
     );
 };
