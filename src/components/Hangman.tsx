@@ -19,7 +19,7 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
         console.log("Selected word:", selectedWord);
     }, [selectedWord]);
 
-    const displayWord = selectedWord.split('').map((letter, index) => {
+    const displayWord = selectedWord.split('').map((letter) => {
         if (guessedLetters.includes(letter)) {
             return letter;
         } else {

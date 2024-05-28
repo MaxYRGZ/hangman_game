@@ -1,4 +1,3 @@
-import React from 'react';
 import hangman from '../img/arc.png';
 import '../css/main.css';
 
