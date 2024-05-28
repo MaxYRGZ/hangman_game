@@ -14,6 +14,7 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
     const [errorCount, setErrorCount] = useState<number>(0);
     const [gameStarted, setGameStarted] = useState<boolean>(false);
     const [roundsWon, setRoundsWon] = useState<number>(0);
+    const [showPlayButton, setShowPlayButton] = useState<boolean>(true);
 
     useEffect(() => {
         console.log("Selected word:", selectedWord);
@@ -42,19 +43,22 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
         setSelectedWord(newWord);
         setGuessedLetters([]);
         setErrorCount(0);
+        setShowPlayButton(false); // No mostrar el botón "Play" después de reiniciar el juego
     };
 
     const handleStartGame = () => {
         setGameStarted(true);
+        setShowPlayButton(false); // No mostrar el botón "Play" después de iniciar el juego
     };
 
     const incrementRoundsWon = () => {
-        setRoundsWon(prevCount => prevCount + 1); 
+        setRoundsWon(prevCount => prevCount + 1); // Incrementa roundsWon en 1
+        restartGame(); // Reiniciar el juego automáticamente después de ganar una ronda
     };
 
     return (
         <div className="marc">
-            {!gameStarted && (
+            {!gameStarted && showPlayButton && (
                 <button onClick={handleStartGame}>Play</button>
             )}
             {gameStarted && (
@@ -68,7 +72,7 @@ const Hangman: React.FC<HangmanProps> = ({ category, word }: HangmanProps) => {
                             {displayWord.join('') === selectedWord && (
                                 <>
                                     <Outlet />
-                                    <button onClick={() => { incrementRoundsWon(); restartGame(); }}>Next Round</button> 
+                                    <button onClick={incrementRoundsWon}>Next Round</button> 
                                 </>
                             )}
                         </>

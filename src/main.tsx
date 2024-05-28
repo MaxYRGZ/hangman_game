@@ -12,11 +12,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Hangman category={''} word={''} /> // Usa tu componente principal (Hangman) en la ruta raíz "/"
+        element: <Hangman category={''} word={''} /> 
       },
       {
         path: "puntaje",
-        element: <Puntaje roundsWon={0} /> // Usa tu componente Puntaje en la ruta "/puntaje"
+        element: <Puntaje roundsWon={0} /> 
       }
     ]
   }
